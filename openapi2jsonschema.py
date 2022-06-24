@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Derived from https://github.com/instrumenta/openapi2jsonschema
+# This script is almost copy of https://github.com/yannh/kubeconform/blob/master/scripts/openapi2jsonschema.py
 import yaml
 import json
 import sys
