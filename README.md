@@ -1,7 +1,7 @@
 # kubernetes-custom-resource-json-schema
 
 This repository is made for use with [kubeconform](https://github.com/yannh/kubeconform).  
-We store JSON schemas convert from CRDs as used in our cluster.
+This repository contains JSON schemas convert from CRDs that we want.
 
 ## How to use
 
