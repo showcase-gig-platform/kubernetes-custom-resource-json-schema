@@ -6,7 +6,8 @@ build-all: \
 	aws-load-balancer-controller \
 	cert-manager \
 	custom-metrics-generator \
-	external-secrets
+	external-secrets \
+	patch-operator
 
 
 .PHONY: argocd
@@ -29,3 +30,7 @@ custom-metrics-generator: ## build custom-metrics-generator custom resource json
 .PHONY: external-secrets
 external-secrets: ## build external-secrets-operator custom resource json schema
 	./openapi2jsonschema.py https://raw.githubusercontent.com/external-secrets/external-secrets/main/deploy/crds/bundle.yaml
+
+.PHONY: patch-operator
+patch-operator: ## build patch-operator custom resource json schema
+  ./openapi2jsonschema.py https://raw.githubusercontent.com/redhat-cop/patch-operator/main/config/crd/bases/redhatcop.redhat.io_patches.yaml
