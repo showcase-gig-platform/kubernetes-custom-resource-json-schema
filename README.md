@@ -35,6 +35,10 @@ https://github.com/external-secrets/external-secrets
 
 https://github.com/redhat-cop/patch-operator
 
+### actions-runner-controller
+
+https://github.com/actions-runner-controller/actions-runner-controller
+
 ## Generate schemas
 
 ```

@@ -7,7 +7,8 @@ build-all: \
 	cert-manager \
 	custom-metrics-generator \
 	external-secrets \
-	patch-operator
+	patch-operator \
+	actions-runner-controller
 
 
 .PHONY: argocd
@@ -33,4 +34,8 @@ external-secrets: ## build external-secrets-operator custom resource json schema
 
 .PHONY: patch-operator
 patch-operator: ## build patch-operator custom resource json schema
-  ./openapi2jsonschema.py https://raw.githubusercontent.com/redhat-cop/patch-operator/main/config/crd/bases/redhatcop.redhat.io_patches.yaml
+	./openapi2jsonschema.py https://raw.githubusercontent.com/redhat-cop/patch-operator/main/config/crd/bases/redhatcop.redhat.io_patches.yaml
+
+.PHONY: actions-runner-controller
+actions-runner-controller: ## build actions-runner-controller custom resource json schema
+	./openapi2jsonschema.py <(kustomize build "github.com/actions-runner-controller/actions-runner-controller/config/crd?ref=master")
