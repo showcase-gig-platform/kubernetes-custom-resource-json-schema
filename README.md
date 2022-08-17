@@ -31,6 +31,10 @@ https://github.com/showcase-gig-platform/custom-metrics-generator
 
 https://github.com/external-secrets/external-secrets
 
+### patch-operator
+
+https://github.com/redhat-cop/patch-operator
+
 ## Generate schemas
 
 ```
