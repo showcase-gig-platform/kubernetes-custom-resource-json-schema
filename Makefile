@@ -8,7 +8,8 @@ build-all: \
 	custom-metrics-generator \
 	external-secrets \
 	patch-operator \
-	actions-runner-controller
+	actions-runner-controller \
+	istio
 
 
 .PHONY: argocd
@@ -39,3 +40,7 @@ patch-operator: ## build patch-operator custom resource json schema
 .PHONY: actions-runner-controller
 actions-runner-controller: ## build actions-runner-controller custom resource json schema
 	./openapi2jsonschema.py <(kustomize build "github.com/actions-runner-controller/actions-runner-controller/config/crd?ref=master")
+
+.PHONY: istio
+istio: ## build istio custom resource json schema
+	./openapi2jsonschema.py https://raw.githubusercontent.com/istio/istio/master/manifests/charts/base/crds/crd-all.gen.yaml

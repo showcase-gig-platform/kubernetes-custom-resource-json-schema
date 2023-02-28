@@ -39,6 +39,10 @@ https://github.com/redhat-cop/patch-operator
 
 https://github.com/actions-runner-controller/actions-runner-controller
 
+### istio
+
+https://github.com/istio/istio
+
 ## Generate schemas
 
 ```
