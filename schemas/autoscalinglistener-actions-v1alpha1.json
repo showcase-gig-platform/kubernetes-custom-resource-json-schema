@@ -64,6 +64,44 @@
           "minimum": 0,
           "type": "integer"
         },
+        "proxy": {
+          "properties": {
+            "http": {
+              "properties": {
+                "credentialSecretRef": {
+                  "type": "string"
+                },
+                "url": {
+                  "description": "Required",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "additionalProperties": false
+            },
+            "https": {
+              "properties": {
+                "credentialSecretRef": {
+                  "type": "string"
+                },
+                "url": {
+                  "description": "Required",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "additionalProperties": false
+            },
+            "noProxy": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object",
+          "additionalProperties": false
+        },
         "runnerScaleSetId": {
           "description": "Required",
           "type": "integer"

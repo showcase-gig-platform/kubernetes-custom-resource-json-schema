@@ -72,12 +72,6 @@
                     "credentialSecretRef": {
                       "type": "string"
                     },
-                    "noProxy": {
-                      "items": {
-                        "type": "string"
-                      },
-                      "type": "array"
-                    },
                     "url": {
                       "description": "Required",
                       "type": "string"
@@ -91,12 +85,6 @@
                     "credentialSecretRef": {
                       "type": "string"
                     },
-                    "noProxy": {
-                      "items": {
-                        "type": "string"
-                      },
-                      "type": "array"
-                    },
                     "url": {
                       "description": "Required",
                       "type": "string"
@@ -104,10 +92,19 @@
                   },
                   "type": "object",
                   "additionalProperties": false
+                },
+                "noProxy": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
                 }
               },
               "type": "object",
               "additionalProperties": false
+            },
+            "proxySecretRef": {
+              "type": "string"
             },
             "runnerScaleSetId": {
               "type": "integer"
