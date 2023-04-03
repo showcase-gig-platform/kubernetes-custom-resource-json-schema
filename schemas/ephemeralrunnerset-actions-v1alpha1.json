@@ -26,9 +26,34 @@
             },
             "githubServerTLS": {
               "properties": {
-                "certConfigMapRef": {
+                "certificateFrom": {
                   "description": "Required",
-                  "type": "string"
+                  "properties": {
+                    "configMapKeyRef": {
+                      "description": "Required",
+                      "properties": {
+                        "key": {
+                          "description": "The key to select.",
+                          "type": "string"
+                        },
+                        "name": {
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?",
+                          "type": "string"
+                        },
+                        "optional": {
+                          "description": "Specify whether the ConfigMap or its key must be defined",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "key"
+                      ],
+                      "type": "object",
+                      "additionalProperties": false
+                    }
+                  },
+                  "type": "object",
+                  "additionalProperties": false
                 }
               },
               "type": "object",
@@ -6323,8 +6348,20 @@
         "currentReplicas": {
           "description": "CurrentReplicas is the number of currently running EphemeralRunner resources being managed by this EphemeralRunnerSet.",
           "type": "integer"
+        },
+        "failedEphemeralRunners": {
+          "type": "integer"
+        },
+        "pendingEphemeralRunners": {
+          "type": "integer"
+        },
+        "runningEphemeralRunners": {
+          "type": "integer"
         }
       },
+      "required": [
+        "currentReplicas"
+      ],
       "type": "object",
       "additionalProperties": false
     }

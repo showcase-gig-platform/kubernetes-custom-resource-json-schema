@@ -43,7 +43,7 @@ https://github.com/actions-runner-controller/actions-runner-controller
 
 https://github.com/istio/istio
 
-## Generate schemas
+## Generate/Update schemas
 
 ```
 FILENAME_FORMAT="{kind}-{group}-{version}" WRITE_DIR=schemas make build-all

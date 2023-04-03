@@ -25,9 +25,34 @@
         },
         "githubServerTLS": {
           "properties": {
-            "certConfigMapRef": {
+            "certificateFrom": {
               "description": "Required",
-              "type": "string"
+              "properties": {
+                "configMapKeyRef": {
+                  "description": "Required",
+                  "properties": {
+                    "key": {
+                      "description": "The key to select.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?",
+                      "type": "string"
+                    },
+                    "optional": {
+                      "description": "Specify whether the ConfigMap or its key must be defined",
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "key"
+                  ],
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              },
+              "type": "object",
+              "additionalProperties": false
             }
           },
           "type": "object",
@@ -80,6 +105,9 @@
           "additionalProperties": false
         },
         "runnerGroup": {
+          "type": "string"
+        },
+        "runnerScaleSetName": {
           "type": "string"
         },
         "template": {
@@ -6324,6 +6352,15 @@
       "description": "AutoscalingRunnerSetStatus defines the observed state of AutoscalingRunnerSet",
       "properties": {
         "currentRunners": {
+          "type": "integer"
+        },
+        "failedEphemeralRunners": {
+          "type": "integer"
+        },
+        "pendingEphemeralRunners": {
+          "type": "integer"
+        },
+        "runningEphemeralRunners": {
           "type": "integer"
         },
         "state": {
