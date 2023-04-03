@@ -31,10 +31,6 @@ https://github.com/showcase-gig-platform/custom-metrics-generator
 
 https://github.com/external-secrets/external-secrets
 
-### patch-operator
-
-https://github.com/redhat-cop/patch-operator
-
 ### actions-runner-controller
 
 https://github.com/actions-runner-controller/actions-runner-controller
