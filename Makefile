@@ -47,4 +47,4 @@ actions-runner-controller: ## build actions-runner-controller custom resource js
 
 .PHONY: istio
 istio: ## build istio custom resource json schema
-	./openapi2jsonschema.py https://raw.githubusercontent.com/istio/istio/master/manifests/charts/base/crds/crd-all.gen.yaml
+	./openapi2jsonschema.py https://raw.githubusercontent.com/istio/istio/refs/heads/master/manifests/charts/base/files/crd-all.gen.yaml
