@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
-# This script is almost copy of https://github.com/yannh/kubeconform/blob/master/scripts/openapi2jsonschema.py
+# Derived from https://github.com/instrumenta/openapi2jsonschema
 import yaml
 import json
 import sys
 import os
 import urllib.request
+if 'DISABLE_SSL_CERT_VALIDATION' in os.environ:
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
 
 def test_additional_properties():
     for test in iter([{
@@ -100,8 +103,6 @@ def write_schema_file(schema, filename):
 
     # Dealing with user input here..
     filename = os.path.basename(filename)
-    dir = os.getenv("WRITE_DIR", ".")
-    filename = dir + "/" + filename
     f = open(filename, "w")
     print(schemaJSON, file=f)
     f.close()
@@ -121,61 +122,64 @@ def construct_value(load, node):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 0:
-        print("missing file")
-        exit(1)
+  if len(sys.argv) < 2:
+      print('Missing FILE parameter.\nUsage: %s [FILE]' % sys.argv[0])
+      exit(1)
 
-    for crdFile in sys.argv[1:]:
-        if crdFile.startswith("http"):
-            f = urllib.request.urlopen(crdFile)
-        else:
-            f = open(crdFile)
-        with f:
-            defs = []
-            yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:value', construct_value)
-            for y in yaml.load_all(f, Loader=yaml.SafeLoader):
-                if y is None:
-                    continue
-                if "items" in y:
-                    defs.extend(y["items"])
-                if "kind" not in y:
-                    continue
-                if y["kind"] != "CustomResourceDefinition":
-                    continue
-                else:
-                    defs.append(y)
+  for crdFile in sys.argv[1:]:
+      if crdFile.startswith("http"):
+        f = urllib.request.urlopen(crdFile)
+      else:
+        f = open(crdFile)
+      with f:
+          defs = []
+          yaml.SafeLoader.add_constructor(u'tag:yaml.org,2002:value', construct_value)
+          for y in yaml.load_all(f, Loader=yaml.SafeLoader):
+              if y is None:
+                  continue
+              if "items" in y:
+                  defs.extend(y["items"])
+              if "kind" not in y:
+                  continue
+              if y["kind"] != "CustomResourceDefinition":
+                  continue
+              else:
+                  defs.append(y)
 
-            for y in defs:
-                filename_format = os.getenv("FILENAME_FORMAT", "{kind}_{version}")
-                filename = ""
-                if "spec" in y and "versions" in y["spec"] and y["spec"]["versions"]:
-                    for version in y["spec"]["versions"]:
-                        if "schema" in version and "openAPIV3Schema" in version["schema"]:
-                            filename = filename_format.format(
-                                kind=y["spec"]["names"]["kind"],
-                                group=y["spec"]["group"].split(".")[0],
-                                version=version["name"],
-                            ).lower() + ".json"
+          for y in defs:
+              filename_format = os.getenv("FILENAME_FORMAT", "{kind}_{version}")
+              filename = ""
+              if "spec" in y and "versions" in y["spec"] and y["spec"]["versions"]:
+                  for version in y["spec"]["versions"]:
+                      if "schema" in version and "openAPIV3Schema" in version["schema"]:
+                          filename = filename_format.format(
+                              kind=y["spec"]["names"]["kind"],
+                              group=y["spec"]["group"].split(".")[0],
+                              fullgroup=y["spec"]["group"],
+                              version=version["name"],
+                          ).lower() + ".json"
 
-                            schema = version["schema"]["openAPIV3Schema"]
-                            write_schema_file(schema, filename)
-                        elif "validation" in y["spec"] and "openAPIV3Schema" in y["spec"]["validation"]:
-                            filename = filename_format.format(
-                                kind=y["spec"]["names"]["kind"],
-                                group=y["spec"]["group"].split(".")[0],
-                                version=version["name"],
-                            ).lower() + ".json"
+                          schema = version["schema"]["openAPIV3Schema"]
+                          write_schema_file(schema, filename)
+                      elif "validation" in y["spec"] and "openAPIV3Schema" in y["spec"]["validation"]:
+                          filename = filename_format.format(
+                              kind=y["spec"]["names"]["kind"],
+                              group=y["spec"]["group"].split(".")[0],
+                              fullgroup=y["spec"]["group"],
+                              version=version["name"],
+                          ).lower() + ".json"
 
-                            schema = y["spec"]["validation"]["openAPIV3Schema"]
-                            write_schema_file(schema, filename)
-                elif "spec" in y and "validation" in y["spec"] and "openAPIV3Schema" in y["spec"]["validation"]:
-                    filename = filename_format.format(
-                        kind=y["spec"]["names"]["kind"],
-                        group=y["spec"]["group"].split(".")[0],
-                        version=y["spec"]["version"],
-                    ).lower() + ".json"
+                          schema = y["spec"]["validation"]["openAPIV3Schema"]
+                          write_schema_file(schema, filename)
+              elif "spec" in y and "validation" in y["spec"] and "openAPIV3Schema" in y["spec"]["validation"]:
+                  filename = filename_format.format(
+                      kind=y["spec"]["names"]["kind"],
+                      group=y["spec"]["group"].split(".")[0],
+                      fullgroup=y["spec"]["group"],
+                      version=y["spec"]["version"],
+                  ).lower() + ".json"
 
-                    schema = y["spec"]["validation"]["openAPIV3Schema"]
-                    write_schema_file(schema, filename)
+                  schema = y["spec"]["validation"]["openAPIV3Schema"]
+                  write_schema_file(schema, filename)
 
-    exit(0)
+  exit(0)

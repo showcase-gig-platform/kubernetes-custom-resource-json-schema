@@ -42,5 +42,5 @@ https://github.com/istio/istio
 ## Generate/Update schemas
 
 ```
-FILENAME_FORMAT="{kind}-{group}-{version}" WRITE_DIR=schemas make build-all
+FILENAME_FORMAT="{kind}-{group}-{version}" make build-all
 ```
